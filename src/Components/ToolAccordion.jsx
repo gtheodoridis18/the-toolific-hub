@@ -21,7 +21,7 @@ export default function ToolAccordion({
     >
       <button
         onClick={onToggle}
-        className="w-full p-5 md:p-6 flex items-center gap-4 text-left"
+        className="w-full px-4 py-5 md:p-6 flex items-center gap-4 text-left"
       >
         <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${gradient} shrink-0`}>
           <Icon className="w-6 h-6 text-white" />
@@ -30,7 +30,7 @@ export default function ToolAccordion({
           <h3 className="font-semibold text-slate-900 text-lg">{title}</h3>
           <p className="text-sm text-slate-500 mt-0.5 truncate">{description}</p>
         </div>
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-2 shrink-0 max-w-full">
           <motion.div
             animate={{ rotate: isOpen ? 180 : 0 }}
             transition={{ duration: 0.2 }}

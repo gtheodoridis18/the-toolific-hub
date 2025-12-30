@@ -189,7 +189,7 @@ export default function Home() {
   const regularTools = filteredTools.filter(tool => !favorites.includes(tool.id));
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white overflow-x-hidden">
       <Helmet>
         <title>Free Online Tools – Calculator, Converter, Timer | the Toolific Hub</title>
         <meta
