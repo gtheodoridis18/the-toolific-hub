@@ -188,12 +188,15 @@ export default function TimeZoneConverter() {
           Date & Time
         </label>
 
-        <input
-          type="datetime-local"
-          value={dateTime}
-          onChange={e => setDateTime(e.target.value)}
-          className="w-full h-14 text-lg rounded-xl border border-slate-200 px-4 bg-white"
-        />
+        <div className="relative w-full overflow-hidden rounded-xl">
+          <input
+            type="datetime-local"
+            value={dateTime}
+            onChange={e => setDateTime(e.target.value)}
+            className="w-full h-14 text-base sm:text-lg rounded-xl border border-slate-200 px-4 bg-white overflow-hidden text-ellipsis whitespace-nowrap appearance-none"
+          />
+        </div>
+
       </div>
 
       {/* TO */}
