@@ -51,6 +51,7 @@ export default function BMICalculator() {
 
   return (
     <div className="max-w-md mx-auto space-y-6">
+
       {/* Unit Toggle */}
       <div className="flex bg-slate-100 p-1 rounded-xl">
         {['metric', 'imperial'].map((u) => (
@@ -88,20 +89,33 @@ export default function BMICalculator() {
             </div>
           ) : (
             <div className="flex gap-3">
-              <input
-                type="number"
-                value={heightFeet}
-                onChange={(e) => setHeightFeet(e.target.value)}
-                className="h-12 w-full px-4 pr-10 text-lg rounded-xl border border-slate-200"
-                placeholder="5"
-              />
-              <input
-                type="number"
-                value={heightInches}
-                onChange={(e) => setHeightInches(e.target.value)}
-                className="h-12 w-full px-4 pr-10 text-lg rounded-xl border border-slate-200"
-                placeholder="10"
-              />
+              {/* FEET */}
+              <div className="relative w-full">
+                <input
+                  type="number"
+                  value={heightFeet}
+                  onChange={(e) => setHeightFeet(e.target.value)}
+                  className="h-12 w-full px-4 pr-14 text-lg rounded-xl border border-slate-200"
+                  placeholder="5"
+                />
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">
+                  ft
+                </span>
+              </div>
+
+              {/* INCHES */}
+              <div className="relative w-full">
+                <input
+                  type="number"
+                  value={heightInches}
+                  onChange={(e) => setHeightInches(e.target.value)}
+                  className="h-12 w-full px-4 pr-14 text-lg rounded-xl border border-slate-200"
+                  placeholder="10"
+                />
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">
+                  in
+                </span>
+              </div>
             </div>
           )}
         </div>
@@ -169,25 +183,11 @@ export default function BMICalculator() {
                 <span>40</span>
               </div>
             </div>
-
-            {/* Legend */}
-            <div className="grid grid-cols-4 gap-2 text-center text-xs">
-              {[
-                ['Under', 'bg-blue-50', 'bg-blue-400'],
-                ['Normal', 'bg-green-50', 'bg-green-400'],
-                ['Over', 'bg-amber-50', 'bg-amber-400'],
-                ['Obese', 'bg-red-50', 'bg-red-400'],
-              ].map(([label, bg, dot]) => (
-                <div key={label} className={`${bg} rounded-lg p-2`}>
-                  <div className={`w-2 h-2 ${dot} rounded-full mx-auto mb-1`} />
-                  <span className="text-slate-600">{label}</span>
-                </div>
-              ))}
-            </div>
           </motion.div>
         )}
       </AnimatePresence>
     </div>
   );
 }
+
 
