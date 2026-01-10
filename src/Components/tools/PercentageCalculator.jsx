@@ -44,7 +44,7 @@ export default function PercentageCalculator() {
   }, [decreaseValue, decreasePercent]);
 
   const inputClass =
-    "h-12 w-full rounded-xl border border-slate-200 px-3 text-lg focus:outline-none focus:ring-2 focus:ring-teal-500";
+    "h-14 w-full rounded-xl border border-slate-200 px-4 text-lg focus:outline-none focus:border-teal-500 transition-colors";
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
@@ -58,13 +58,13 @@ export default function PercentageCalculator() {
 
         <div className="flex flex-wrap items-end gap-3">
           <div className="flex-1 min-w-[120px]">
-            <label className="text-xs text-slate-500 mb-1 block">Percentage</label>
+            <label className="text-xs text-slate-500 uppercase tracking-wide mb-1 block">Percentage</label>
             <input
               type="number"
               value={xPercent}
               onChange={(e) => setXPercent(e.target.value)}
               className={inputClass}
-              placeholder="10"
+              placeholder="e.g. 15"
             />
           </div>
 
@@ -72,13 +72,13 @@ export default function PercentageCalculator() {
           <span className="text-slate-500 pb-3">of</span>
 
           <div className="flex-1 min-w-[120px]">
-            <label className="text-xs text-slate-500 mb-1 block">Value</label>
+            <label className="text-xs text-slate-500 uppercase tracking-wide mb-1 block">Value</label>
             <input
               type="number"
               value={yValue}
               onChange={(e) => setYValue(e.target.value)}
               className={inputClass}
-              placeholder="100"
+              placeholder="e.g. 200"
             />
           </div>
 
@@ -101,26 +101,26 @@ export default function PercentageCalculator() {
 
         <div className="flex flex-wrap items-end gap-3">
           <div className="flex-1 min-w-[120px]">
-            <label className="text-xs text-green-700 mb-1 block">Initial Value</label>
+            <label className="text-xs text-green-700 uppercase tracking-wide mb-1 block">Initial Value</label>
             <input
               type="number"
               value={increaseValue}
               onChange={(e) => setIncreaseValue(e.target.value)}
               className={`${inputClass} border-green-200`}
-              placeholder="100"
+              placeholder="e.g. 100"
             />
           </div>
 
           <span className="text-green-600 pb-3">+</span>
 
           <div className="flex-1 min-w-[120px]">
-            <label className="text-xs text-green-700 mb-1 block">Increase %</label>
+            <label className="text-xs text-green-700 uppercase tracking-wide mb-1 block">Increase %</label>
             <input
               type="number"
               value={increasePercent}
               onChange={(e) => setIncreasePercent(e.target.value)}
               className={`${inputClass} border-green-200`}
-              placeholder="10"
+              placeholder="e.g. 20"
             />
           </div>
 
@@ -144,26 +144,26 @@ export default function PercentageCalculator() {
 
         <div className="flex flex-wrap items-end gap-3">
           <div className="flex-1 min-w-[120px]">
-            <label className="text-xs text-red-700 mb-1 block">Initial Value</label>
+            <label className="text-xs text-red-700 uppercase tracking-wide mb-1 block">Initial Value</label>
             <input
               type="number"
               value={decreaseValue}
               onChange={(e) => setDecreaseValue(e.target.value)}
               className={`${inputClass} border-red-200`}
-              placeholder="100"
+              placeholder="e.g. 100"
             />
           </div>
 
           <span className="text-red-600 pb-3">−</span>
 
           <div className="flex-1 min-w-[120px]">
-            <label className="text-xs text-red-700 mb-1 block">Decrease %</label>
+            <label className="text-xs text-red-700 uppercase tracking-wide mb-1 block">Decrease %</label>
             <input
               type="number"
               value={decreasePercent}
               onChange={(e) => setDecreasePercent(e.target.value)}
               className={`${inputClass} border-red-200`}
-              placeholder="10"
+              placeholder="e.g. 10"
             />
           </div>
 
@@ -181,4 +181,3 @@ export default function PercentageCalculator() {
     </div>
   );
 }
-

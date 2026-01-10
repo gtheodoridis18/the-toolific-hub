@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Cake, Clock, ChevronDown } from 'lucide-react';
+import { Calendar, Cake, Clock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Select } from '../../components/ui/select';
 
 export default function AgeCalculator() {
   const [day, setDay] = useState('');
@@ -97,62 +98,65 @@ export default function AgeCalculator() {
         <div className="grid grid-cols-3 gap-3">
           {/* DAY */}
           <div>
-            <label className="text-xs font-medium text-slate-500 uppercase mb-2 block">
+            <label className="text-xs font-medium text-slate-500 uppercase tracking-wide mb-2 block">
               Day
             </label>
-            <div className="relative">
-              <select
-                value={day}
-                onChange={(e) => setDay(e.target.value)}
-                className="w-full h-14 rounded-xl border border-slate-300 bg-white pl-3 pr-10 text-lg appearance-none"
-              >
-                <option value=""> </option>
-                {days.map(d => (
-                  <option key={d} value={d}>{d}</option>
-                ))}
-              </select>
-              <ChevronDown className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-            </div>
+            <Select
+              value={day}
+              onChange={(e) => setDay(e.target.value)}
+              variant="default"
+              className="text-lg"
+            >
+              <option value="" disabled>DD</option>
+              {days.map(d => (
+                <option key={d} value={d}>{d}</option>
+              ))}
+            </Select>
+            {!day && (
+              <p className="text-xs text-slate-400 mt-1">e.g. 15</p>
+            )}
           </div>
 
           {/* MONTH */}
           <div>
-            <label className="text-xs font-medium text-slate-500 uppercase mb-2 block">
+            <label className="text-xs font-medium text-slate-500 uppercase tracking-wide mb-2 block">
               Month
             </label>
-            <div className="relative">
-              <select
-                value={month}
-                onChange={(e) => setMonth(e.target.value)}
-                className="w-full h-14 rounded-xl border border-slate-300 bg-white pl-3 pr-10 text-lg appearance-none"
-              >
-                <option value=""> </option>
-                {months.map(m => (
-                  <option key={m.value} value={m.value}>{m.label}</option>
-                ))}
-              </select>
-              <ChevronDown className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-            </div>
+            <Select
+              value={month}
+              onChange={(e) => setMonth(e.target.value)}
+              variant="default"
+              className="text-lg"
+            >
+              <option value="" disabled>MM</option>
+              {months.map(m => (
+                <option key={m.value} value={m.value}>{m.label}</option>
+              ))}
+            </Select>
+            {!month && (
+              <p className="text-xs text-slate-400 mt-1">e.g. June</p>
+            )}
           </div>
 
           {/* YEAR */}
           <div>
-            <label className="text-xs font-medium text-slate-500 uppercase mb-2 block">
+            <label className="text-xs font-medium text-slate-500 uppercase tracking-wide mb-2 block">
               Year
             </label>
-            <div className="relative">
-              <select
-                value={year}
-                onChange={(e) => setYear(e.target.value)}
-                className="w-full h-14 rounded-xl border border-slate-300 bg-white pl-3 pr-10 text-lg appearance-none"
-              >
-                <option value=""> </option>
-                {years.map(y => (
-                  <option key={y} value={y}>{y}</option>
-                ))}
-              </select>
-              <ChevronDown className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-            </div>
+            <Select
+              value={year}
+              onChange={(e) => setYear(e.target.value)}
+              variant="default"
+              className="text-lg"
+            >
+              <option value="" disabled>YYYY</option>
+              {years.map(y => (
+                <option key={y} value={y}>{y}</option>
+              ))}
+            </Select>
+            {!year && (
+              <p className="text-xs text-slate-400 mt-1">e.g. 1990</p>
+            )}
           </div>
         </div>
       </div>
@@ -167,7 +171,7 @@ export default function AgeCalculator() {
             className="space-y-4"
           >
             <div className="bg-gradient-to-br from-teal-500 to-teal-700 rounded-3xl p-6 text-white">
-              <p className="text-teal-100 text-sm uppercase mb-2">Your Age</p>
+              <p className="text-teal-100 text-sm uppercase tracking-wide mb-2">Your Age</p>
               <div className="flex justify-center gap-4 flex-wrap">
                 {['years', 'months', 'days'].map(k => (
                   <div key={k} className="text-center">
@@ -186,7 +190,7 @@ export default function AgeCalculator() {
                 ['Total Hours', age.totalHours],
               ].map(([label, val]) => (
                 <div key={label} className="bg-white rounded-xl p-4 border border-slate-200">
-                  <p className="text-xs text-slate-500 uppercase mb-1">{label}</p>
+                  <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">{label}</p>
                   <p className="text-2xl font-semibold">{val.toLocaleString()}</p>
                 </div>
               ))}
@@ -196,7 +200,7 @@ export default function AgeCalculator() {
               <div className="bg-amber-50 rounded-xl p-4 border border-amber-200">
                 <div className="flex items-center gap-2 mb-1">
                   <Cake className="w-4 h-4 text-amber-600" />
-                  <p className="text-xs uppercase text-amber-700">Next Birthday</p>
+                  <p className="text-xs uppercase tracking-wide text-amber-700">Next Birthday</p>
                 </div>
                 <p className="text-xl font-semibold text-amber-900">
                   {age.daysUntilBirthday === 0 ? '🎉 Today!' : `${age.daysUntilBirthday} days`}
@@ -206,7 +210,7 @@ export default function AgeCalculator() {
               <div className="bg-purple-50 rounded-xl p-4 border border-purple-200">
                 <div className="flex items-center gap-2 mb-1">
                   <Clock className="w-4 h-4 text-purple-600" />
-                  <p className="text-xs uppercase text-purple-700">Born On</p>
+                  <p className="text-xs uppercase tracking-wide text-purple-700">Born On</p>
                 </div>
                 <p className="text-xl font-semibold text-purple-900">
                   {age.dayOfWeek}
@@ -219,6 +223,3 @@ export default function AgeCalculator() {
     </div>
   );
 }
-
-
-

@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Clock } from 'lucide-react';
+import SearchableSelect from '../../components/ui/searchable-select';
 
 /* ---------- ALL TIME ZONES ---------- */
 const ALL_TIME_ZONES = Intl.supportedValuesOf('timeZone');
@@ -12,85 +13,6 @@ const PRIORITY = [
   'America/Chicago',
   'Europe/London',
 ];
-
-/* ---------- SEARCHABLE SELECT ---------- */
-function SearchableSelect({
-  value,
-  onChange,
-  options,
-  placeholder,
-  highlightDetected = false,
-}) {
-  const [open, setOpen] = useState(false);
-  const [query, setQuery] = useState('');
-  const ref = useRef(null);
-
-  const filtered = options.filter(o =>
-    o.label.toLowerCase().includes(query.toLowerCase())
-  );
-
-  useEffect(() => {
-    const handler = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
-  }, []);
-
-  const selectedLabel =
-    options.find(o => o.value === value)?.label || placeholder;
-
-  return (
-    <div ref={ref} className="relative w-full">
-      <button
-        type="button"
-        onClick={() => setOpen(v => !v)}
-        className="w-full h-12 rounded-xl border border-slate-200 px-4 pr-12 bg-white text-left truncate"
-      >
-        <span className={highlightDetected ? 'font-medium' : ''}>
-          {selectedLabel}
-        </span>
-        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">
-          ▼
-        </span>
-      </button>
-
-      {open && (
-        <div className="absolute z-30 mt-2 left-0 right-0 bg-white rounded-xl border border-slate-200 shadow-lg max-h-[70vh] overflow-hidden">
-          <input
-            autoFocus
-            value={query}
-            onChange={e => setQuery(e.target.value)}
-            placeholder="Search time zone…"
-            className="w-full px-4 py-2 border-b border-slate-200 outline-none text-sm"
-          />
-          <div className="max-h-[60vh] overflow-y-auto overscroll-contain">
-            {filtered.map(opt => (
-              <button
-                key={opt.value}
-                onClick={() => {
-                  onChange(opt.value);
-                  setOpen(false);
-                  setQuery('');
-                }}
-                className="w-full px-4 py-2 text-left hover:bg-slate-50 text-sm"
-              >
-                {opt.label}
-              </button>
-            ))}
-            {filtered.length === 0 && (
-              <div className="px-4 py-3 text-sm text-slate-400">
-                No results
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
 
 export default function TimeZoneConverter() {
   const detectedZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -139,7 +61,7 @@ export default function TimeZoneConverter() {
     setDateTime(iso);
   }, []);
 
-  /* ---------- CONVERSION ---------- */
+  /* ---------- CONVERSION (FIXED LOGIC) ---------- */
   useEffect(() => {
     if (!dateTime || !fromZone || !toZone) {
       setResult('');
@@ -147,28 +69,72 @@ export default function TimeZoneConverter() {
     }
 
     try {
-      const base = new Date(dateTime);
-      const fromDate = new Date(base.toLocaleString('en-US', { timeZone: fromZone }));
-      const toDate = new Date(fromDate.toLocaleString('en-US', { timeZone: toZone }));
+      // Parse the datetime-local input as if it's in the "from" timezone
+      const [datePart, timePart] = dateTime.split('T');
+      const [year, month, day] = datePart.split('-').map(Number);
+      const [hour, minute] = timePart.split(':').map(Number);
 
-      setResult(
-        toDate.toLocaleString(undefined, {
-          weekday: 'short',
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
-        })
-      );
-    } catch {
-      setResult('');
+      // Create a date string in ISO format for the "from" timezone
+      const isoString = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}T${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:00`;
+      
+      // Format using Intl to handle timezone properly
+      const formatter = new Intl.DateTimeFormat('en-US', {
+        timeZone: toZone,
+        weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+      });
+
+      // Create a date object and interpret it as being in the "from" timezone
+      // Then convert to the "to" timezone
+      const parts = isoString.match(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/);
+      const utcDate = new Date(Date.UTC(
+        parseInt(parts[1]),
+        parseInt(parts[2]) - 1,
+        parseInt(parts[3]),
+        parseInt(parts[4]),
+        parseInt(parts[5]),
+        parseInt(parts[6])
+      ));
+
+      // Get offset for "from" timezone
+      const fromFormatter = new Intl.DateTimeFormat('en-US', {
+        timeZone: fromZone,
+        timeZoneName: 'shortOffset'
+      });
+      
+      const fromParts = fromFormatter.formatToParts(utcDate);
+      const fromOffset = fromParts.find(p => p.type === 'timeZoneName')?.value || 'GMT+0';
+      const fromOffsetMinutes = parseTimezoneOffset(fromOffset);
+
+      // Adjust UTC date by the offset difference
+      const adjustedDate = new Date(utcDate.getTime() - (fromOffsetMinutes * 60000));
+
+      setResult(formatter.format(adjustedDate));
+    } catch (error) {
+      console.error('Timezone conversion error:', error);
+      setResult('Invalid date or timezone');
     }
   }, [dateTime, fromZone, toZone]);
 
+  // Helper to parse timezone offset strings like "GMT+5:30"
+  function parseTimezoneOffset(offsetString) {
+    const match = offsetString.match(/GMT([+-])(\d{1,2}):?(\d{2})?/);
+    if (!match) return 0;
+    
+    const sign = match[1] === '+' ? 1 : -1;
+    const hours = parseInt(match[2]) || 0;
+    const minutes = parseInt(match[3]) || 0;
+    
+    return sign * (hours * 60 + minutes);
+  }
+
   return (
-    /* 🔑 REMOVED max-w + mx-auto, MATCH accordion width */
-    <div className="w-full space-y-5 overflow-x-hidden">
+    <div className="w-full space-y-5">
 
       {/* FROM */}
       <div className="bg-slate-50 rounded-2xl p-4">
@@ -182,25 +148,24 @@ export default function TimeZoneConverter() {
           onChange={setFromZone}
           options={FROM_ZONES}
           highlightDetected
+          variant="default"
         />
 
         <label className="text-xs text-slate-500 uppercase tracking-wide mt-4 mb-2 block">
           Date & Time
         </label>
 
-        <div className="relative w-full overflow-hidden rounded-xl">
-          <input
-            type="datetime-local"
-            value={dateTime}
-            onChange={e => setDateTime(e.target.value)}
-            className="w-full h-14 text-base sm:text-lg rounded-xl border border-slate-200 px-4 bg-white overflow-hidden text-ellipsis whitespace-nowrap appearance-none"
-          />
-        </div>
-
+        <input
+          type="datetime-local"
+          value={dateTime}
+          onChange={e => setDateTime(e.target.value)}
+          placeholder="e.g. 2026-01-09 14:30"
+          className="w-full h-14 text-base sm:text-lg rounded-xl border border-slate-200 px-4 bg-white focus:border-teal-500 focus:outline-none transition-colors"
+        />
       </div>
 
       {/* TO */}
-      <div className="bg-teal-50 rounded-2xl p-4 ring ring-teal-100">
+      <div className="bg-teal-50 rounded-2xl p-4 border border-teal-100">
 
         <label className="text-xs text-teal-700 uppercase tracking-wide mb-2 flex items-center gap-1">
           <Clock className="w-4 h-4" />
@@ -212,6 +177,7 @@ export default function TimeZoneConverter() {
           onChange={setToZone}
           options={TO_ZONES}
           placeholder="Select time zone"
+          variant="teal"
         />
 
         <label className="text-xs text-teal-700 uppercase tracking-wide mt-4 mb-2 block">
@@ -219,7 +185,7 @@ export default function TimeZoneConverter() {
         </label>
 
         <div className="bg-teal-600 text-white rounded-xl px-4 py-4">
-          <div className="text-xl sm:text-3xl font-light break-words leading-snug">
+          <div className="text-xl sm:text-2xl font-light break-words leading-snug">
             {result || '—'}
           </div>
         </div>
@@ -227,11 +193,3 @@ export default function TimeZoneConverter() {
     </div>
   );
 }
-
-
-
-
-
-
-
-

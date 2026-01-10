@@ -16,11 +16,11 @@ export default function ToolAccordion({
     <motion.div
       layout="position"
       layoutScroll
-      className={`w-full max-w-full bg-white rounded-2xl border transition-colors duration-300 overflow-hidden ${
+      className={`w-full max-w-full bg-white rounded-2xl border transition-colors duration-300 ${
         isOpen
           ? 'border-teal-200 shadow-lg shadow-teal-500/5'
           : 'border-slate-200 hover:border-slate-300 hover:shadow-md'
-    }`}
+      }`}
     >
 
       <button
@@ -57,13 +57,13 @@ export default function ToolAccordion({
       <AnimatePresence initial={false}>
         {isOpen && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="overflow-hidden w-full max-w-full"
+            initial={{ height: 0 }}
+            animate={{ height: 'auto' }}
+            exit={{ height: 0 }}
+            transition={{ duration: 0.3, ease: [0.4, 0.0, 0.2, 1] }}
+            className="w-full max-w-full overflow-hidden"
           >
-            <div className="px-4 pb-6 md:px-6 md:pb-8 pt-2 border-t border-slate-100 w-full max-w-full">
+            <div className="px-4 pb-6 md:px-6 md:pb-8 pt-6 w-full max-w-full">
               {children}
             </div>
           </motion.div>

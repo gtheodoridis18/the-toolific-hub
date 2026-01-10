@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowRightLeft, RefreshCw } from 'lucide-react';
+import { Select } from '../../components/ui/select';
 
 const currencies = [
   { code: 'USD', name: 'US Dollar', symbol: '$', flag: '🇺🇸' },
@@ -75,23 +76,17 @@ export default function CurrencyConverter() {
       <div className="bg-slate-50 rounded-2xl p-4">
         <div className="flex items-center gap-2 mb-3">
           <span className="text-2xl">{fromData.flag}</span>
-
-          <div className="relative flex-1">
-            <select
-              value={fromCurrency}
-              onChange={(e) => setFromCurrency(e.target.value)}
-              className="w-full h-10 rounded-xl border border-slate-200 bg-white pl-3 pr-10 appearance-none"
-            >
-              {currencies.map(c => (
-                <option key={c.code} value={c.code}>
-                  {c.code} – {c.name}
-                </option>
-              ))}
-            </select>
-            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400">
-              ▼
-            </span>
-          </div>
+          <Select
+            value={fromCurrency}
+            onChange={(e) => setFromCurrency(e.target.value)}
+            variant="default"
+          >
+            {currencies.map(c => (
+              <option key={c.code} value={c.code}>
+                {c.code} – {c.name}
+              </option>
+            ))}
+          </Select>
         </div>
 
         <div className="relative">
@@ -102,8 +97,8 @@ export default function CurrencyConverter() {
             type="number"
             value={fromValue}
             onChange={(e) => setFromValue(e.target.value)}
-            placeholder="100"
-            className="h-14 text-2xl font-light pl-10 pr-4 rounded-xl border border-slate-200 w-full"
+            placeholder="e.g. 100"
+            className="h-14 text-2xl font-light pl-10 pr-4 rounded-xl border border-slate-200 w-full focus:border-teal-500 focus:outline-none transition-colors"
           />
         </div>
       </div>
@@ -112,7 +107,8 @@ export default function CurrencyConverter() {
       <div className="flex justify-center">
         <button
           onClick={swap}
-          className="rounded-full h-12 w-12 border border-slate-200 hover:bg-teal-50 hover:border-teal-200 flex items-center justify-center"
+          className="rounded-full h-12 w-12 border-2 border-slate-200 hover:bg-teal-50 hover:border-teal-500 flex items-center justify-center transition-all"
+          aria-label="Swap currencies"
         >
           <ArrowRightLeft className="w-5 h-5 text-teal-600" />
         </button>
@@ -122,23 +118,17 @@ export default function CurrencyConverter() {
       <div className="bg-teal-50 rounded-2xl p-4 border border-teal-100">
         <div className="flex items-center gap-2 mb-3">
           <span className="text-2xl">{toData.flag}</span>
-
-          <div className="relative flex-1">
-            <select
-              value={toCurrency}
-              onChange={(e) => setToCurrency(e.target.value)}
-              className="w-full h-10 rounded-xl border border-teal-200 bg-white pl-3 pr-10 appearance-none"
-            >
-              {currencies.map(c => (
-                <option key={c.code} value={c.code}>
-                  {c.code} – {c.name}
-                </option>
-              ))}
-            </select>
-            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-teal-500">
-              ▼
-            </span>
-          </div>
+          <Select
+            value={toCurrency}
+            onChange={(e) => setToCurrency(e.target.value)}
+            variant="teal"
+          >
+            {currencies.map(c => (
+              <option key={c.code} value={c.code}>
+                {c.code} – {c.name}
+              </option>
+            ))}
+          </Select>
         </div>
 
         <div className="relative">
@@ -165,14 +155,3 @@ export default function CurrencyConverter() {
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
-

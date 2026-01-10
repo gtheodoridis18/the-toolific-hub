@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowRightLeft } from 'lucide-react';
+import { Select } from '../../components/ui/select';
 
 const conversions = {
   length: {
@@ -144,7 +145,7 @@ export default function UnitConverter() {
   const [category, setCategory] = useState('length');
   const [fromUnit, setFromUnit] = useState('Meters');
   const [toUnit, setToUnit] = useState('Feet');
-  const [fromValue, setFromValue] = useState('1');
+  const [fromValue, setFromValue] = useState('');
   const [toValue, setToValue] = useState('');
 
   const convert = (value, from, to, cat) => {
@@ -168,18 +169,29 @@ export default function UnitConverter() {
     }
 
     const base = num * conversions[cat].toBase[from];
-    return (base / conversions[cat].toBase[to]).toFixed(6).replace(/\.?0+$/, '');
+    const result = base / conversions[cat].toBase[to];
+    
+    // Smart formatting: remove trailing zeros, but keep significant digits
+    if (Math.abs(result) < 0.0001) {
+      return result.toExponential(4);
+    }
+    return result.toFixed(8).replace(/\.?0+$/, '');
   };
 
   useEffect(() => {
-    setToValue(convert(fromValue, fromUnit, toUnit, category));
+    if (fromValue === '') {
+      setToValue('');
+    } else {
+      setToValue(convert(fromValue, fromUnit, toUnit, category));
+    }
   }, [fromValue, fromUnit, toUnit, category]);
 
   useEffect(() => {
     const units = conversions[category].units;
     setFromUnit(units[0]);
     setToUnit(units[1]);
-    setFromValue('1');
+    setFromValue('');
+    setToValue('');
   }, [category]);
 
   const swap = () => {
@@ -187,6 +199,10 @@ export default function UnitConverter() {
     setToUnit(fromUnit);
     setFromValue(toValue);
   };
+
+  // Example value for display when input is empty
+  const exampleValue = fromValue === '' ? convert('100', fromUnit, toUnit, category) : '';
+  const displayValue = fromValue === '' && exampleValue ? exampleValue : toValue;
 
   return (
     <div className="w-full max-w-xl mx-auto">
@@ -197,8 +213,11 @@ export default function UnitConverter() {
           <button
             key={cat}
             onClick={() => setCategory(cat)}
-            className={`px-3 py-2 rounded-lg text-sm font-medium transition
-              ${category === cat ? 'bg-white shadow border' : 'bg-slate-100 hover:bg-slate-200'}`}
+            className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+              category === cat 
+                ? 'bg-teal-500 text-white shadow-md' 
+                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+            }`}
           >
             {cat.charAt(0).toUpperCase() + cat.slice(1)}
           </button>
@@ -207,23 +226,28 @@ export default function UnitConverter() {
 
       {/* FROM */}
       <div className="bg-slate-50 rounded-2xl p-4 mb-4">
-        <label className="text-xs font-medium text-slate-500 uppercase mb-2 block">From</label>
+        <label className="text-xs font-medium text-slate-500 uppercase tracking-wide mb-3 block">
+          From
+        </label>
         <div className="flex flex-col sm:flex-row gap-3">
           <input
             type="number"
             value={fromValue}
             onChange={e => setFromValue(e.target.value)}
-            className="w-full h-12 px-4 text-lg font-medium border border-slate-200 rounded-xl"
+            placeholder="e.g. 100"
+            className="flex-1 h-14 px-4 text-lg font-medium border border-slate-200 rounded-xl focus:border-teal-500 focus:outline-none transition-colors"
           />
-          <select
-            value={fromUnit}
-            onChange={e => setFromUnit(e.target.value)}
-            className="w-full sm:w-36 h-12 px-3 rounded-xl border border-slate-200 bg-white"
-          >
-            {conversions[category].units.map(u => (
-              <option key={u}>{u}</option>
-            ))}
-          </select>
+          <div className="sm:w-48">
+            <Select
+              value={fromUnit}
+              onChange={e => setFromUnit(e.target.value)}
+              variant="default"
+            >
+              {conversions[category].units.map(u => (
+                <option key={u} value={u}>{u}</option>
+              ))}
+            </Select>
+          </div>
         </div>
       </div>
 
@@ -231,33 +255,45 @@ export default function UnitConverter() {
       <div className="flex justify-center mb-4">
         <button
           onClick={swap}
-          className="h-10 w-10 rounded-full border border-slate-200 hover:bg-teal-50 flex items-center justify-center"
+          className="h-12 w-12 rounded-full border-2 border-slate-200 hover:border-teal-500 hover:bg-teal-50 flex items-center justify-center transition-all"
+          aria-label="Swap units"
         >
-          <ArrowRightLeft className="w-4 h-4 text-teal-600" />
+          <ArrowRightLeft className="w-5 h-5 text-teal-600" />
         </button>
       </div>
 
       {/* TO */}
       <div className="bg-teal-50 rounded-2xl p-4 border border-teal-100">
-        <label className="text-xs font-medium text-teal-700 uppercase mb-2 block">To</label>
+        <label className="text-xs font-medium text-teal-700 uppercase tracking-wide mb-3 block">
+          To
+        </label>
         <div className="flex flex-col sm:flex-row gap-3">
-          <div className="w-full h-12 bg-white px-4 flex items-center text-lg font-medium border border-teal-200 rounded-xl">
-            {toValue || '0'}
+          <div className="flex-1 h-14 bg-white px-4 flex items-center text-lg font-medium border border-teal-200 rounded-xl">
+            <span className={fromValue === '' && exampleValue ? 'text-slate-400' : 'text-slate-900'}>
+              {displayValue || '—'}
+            </span>
           </div>
-          <select
-            value={toUnit}
-            onChange={e => setToUnit(e.target.value)}
-            className="w-full sm:w-36 h-12 px-3 rounded-xl border border-teal-200 bg-white"
-          >
-            {conversions[category].units.map(u => (
-              <option key={u}>{u}</option>
-            ))}
-          </select>
+          <div className="sm:w-48">
+            <Select
+              value={toUnit}
+              onChange={e => setToUnit(e.target.value)}
+              variant="teal"
+            >
+              {conversions[category].units.map(u => (
+                <option key={u} value={u}>{u}</option>
+              ))}
+            </Select>
+          </div>
         </div>
       </div>
+
+      {/* Helper Text */}
+      {fromValue === '' && (
+        <p className="text-center text-xs text-slate-400 mt-4">
+          Enter a value above to convert between units
+        </p>
+      )}
 
     </div>
   );
 }
-
-

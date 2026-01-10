@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-
+import React, { useState, useCallback } from 'react';
 import { Delete } from 'lucide-react';
 
 function Button({ children, className = '', ...props }) {
@@ -19,16 +18,16 @@ export default function Calculator() {
   const [operation, setOperation] = useState(null);
   const [waitingForOperand, setWaitingForOperand] = useState(false);
 
-  const inputDigit = (digit) => {
+  const inputDigit = useCallback((digit) => {
     if (waitingForOperand) {
       setDisplay(digit);
       setWaitingForOperand(false);
     } else {
       setDisplay(display === '0' ? digit : display + digit);
     }
-  };
+  }, [display, waitingForOperand]);
 
-  const inputDecimal = () => {
+  const inputDecimal = useCallback(() => {
     if (waitingForOperand) {
       setDisplay('0.');
       setWaitingForOperand(false);
@@ -37,29 +36,35 @@ export default function Calculator() {
     if (!display.includes('.')) {
       setDisplay(display + '.');
     }
-  };
+  }, [display, waitingForOperand]);
 
-  const clear = () => {
+  const clear = useCallback(() => {
     setDisplay('0');
     setPreviousValue(null);
     setOperation(null);
     setWaitingForOperand(false);
-  };
+  }, []);
 
-  const backspace = () => {
+  const backspace = useCallback(() => {
+    if (waitingForOperand) return;
+    
     if (display.length === 1 || (display.length === 2 && display[0] === '-')) {
       setDisplay('0');
     } else {
       setDisplay(display.slice(0, -1));
     }
-  };
+  }, [display, waitingForOperand]);
 
-  const performOperation = (nextOperation) => {
+  const performOperation = useCallback((nextOperation) => {
     const inputValue = parseFloat(display);
+
+    if (isNaN(inputValue)) {
+      return;
+    }
 
     if (previousValue === null) {
       setPreviousValue(inputValue);
-    } else if (operation) {
+    } else if (operation && !waitingForOperand) {
       const currentValue = previousValue || 0;
       let result;
 
@@ -74,10 +79,19 @@ export default function Calculator() {
           result = currentValue * inputValue;
           break;
         case '÷':
-          result = inputValue !== 0 ? currentValue / inputValue : 'Error';
+          if (inputValue === 0) {
+            result = 'Error';
+          } else {
+            result = currentValue / inputValue;
+          }
           break;
         default:
           result = inputValue;
+      }
+
+      // Handle precision issues
+      if (result !== 'Error' && typeof result === 'number') {
+        result = Math.round(result * 100000000) / 100000000;
       }
 
       setDisplay(String(result));
@@ -86,10 +100,10 @@ export default function Calculator() {
 
     setWaitingForOperand(true);
     setOperation(nextOperation);
-  };
+  }, [display, previousValue, operation, waitingForOperand]);
 
-  const calculate = () => {
-    if (!operation || previousValue === null) return;
+  const calculate = useCallback(() => {
+    if (!operation || previousValue === null || waitingForOperand) return;
 
     const inputValue = parseFloat(display);
     let result;
@@ -105,39 +119,51 @@ export default function Calculator() {
         result = previousValue * inputValue;
         break;
       case '÷':
-        result = inputValue !== 0 ? previousValue / inputValue : 'Error';
+        if (inputValue === 0) {
+          result = 'Error';
+        } else {
+          result = previousValue / inputValue;
+        }
         break;
       default:
         result = inputValue;
+    }
+
+    // Handle precision issues
+    if (result !== 'Error' && typeof result === 'number') {
+      result = Math.round(result * 100000000) / 100000000;
     }
 
     setDisplay(String(result));
     setPreviousValue(null);
     setOperation(null);
     setWaitingForOperand(true);
-  };
+  }, [display, previousValue, operation, waitingForOperand]);
 
-  const toggleSign = () => {
+  const toggleSign = useCallback(() => {
+    if (display === '0' || display === 'Error') return;
     setDisplay(display.charAt(0) === '-' ? display.slice(1) : '-' + display);
-  };
+  }, [display]);
 
-  const percentage = () => {
+  const percentage = useCallback(() => {
     const value = parseFloat(display);
-    setDisplay(String(value / 100));
-  };
+    if (!isNaN(value)) {
+      setDisplay(String(value / 100));
+    }
+  }, [display]);
 
-  const buttonClass = "h-14 text-lg font-medium rounded-xl transition-all duration-200 active:scale-95";
+  const buttonClass = "h-14 text-lg font-medium rounded-xl transition-all duration-150 active:scale-95 touch-manipulation";
 
   return (
     <div className="max-w-xs mx-auto">
       <div className="bg-slate-900 rounded-2xl p-4 mb-4">
         <div className="text-right">
           {previousValue !== null && operation && (
-            <div className="text-slate-500 text-sm h-5">
+            <div className="text-slate-500 text-sm h-5 truncate">
               {previousValue} {operation}
             </div>
           )}
-          <div className="text-white text-4xl font-light tracking-tight overflow-hidden">
+          <div className="text-white text-4xl font-light tracking-tight overflow-hidden text-ellipsis">
             {display}
           </div>
         </div>
@@ -245,4 +271,3 @@ export default function Calculator() {
     </div>
   );
 }
-

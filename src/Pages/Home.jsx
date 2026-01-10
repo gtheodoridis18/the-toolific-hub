@@ -189,7 +189,7 @@ export default function Home() {
   const regularTools = filteredTools.filter(tool => !favorites.includes(tool.id));
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white overflow-x-hidden">
+    <div className="min-h-screen bg-white overflow-x-hidden">
       <Helmet>
         <title>Free Online Tools – Calculator, Converter, Timer | the Toolific Hub</title>
         <meta
@@ -197,6 +197,7 @@ export default function Home() {
           content="the Toolific Hub offers free, fast online tools including calculators, unit converters, timers, QR code generators, and more. No signup required."
         />
       </Helmet>
+      
       {/* Header */}
       <header className="py-12 md:py-20 px-4">
         <div className="max-w-7xl mx-auto text-center">
@@ -234,20 +235,32 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Top Ad */}
+      {/* Top Banner Ad */}
       <div className="max-w-7xl mx-auto px-4 mb-8">
         <AdPlaceholder variant="banner" />
       </div>
 
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 pb-16">
-        <div className="flex gap-6 items-start">
-          <aside className="hidden xl:block sticky top-4 shrink-0">
-            <AdPlaceholder variant="sidebar" />
+      {/* Main Content with Sidebar Ads */}
+      <div className="max-w-[1600px] mx-auto px-4 pb-16">
+        <div className="flex gap-6 items-start justify-center">
+          
+          {/* LEFT SIDEBAR AD */}
+          <aside className="hidden xl:block sticky top-4 shrink-0 w-[300px]">
+            <div className="space-y-6">
+              <AdPlaceholder variant="sidebar" />
+              
+              {/* Additional ad slot for variety */}
+              <div className="pt-6">
+                <AdPlaceholder variant="square" />
+              </div>
+            </div>
           </aside>
 
-          <main className="flex-1 max-w-4xl mx-auto w-full">
+          {/* MAIN TOOLS CONTENT */}
+          <main className="flex-1 max-w-4xl w-full">
             <div className="space-y-4 w-full max-w-full overflow-x-hidden">
+              
+              {/* No results message */}
               {filteredTools.length === 0 && (
                 <div className="text-center py-12">
                   <p className="text-slate-400 text-lg">
@@ -256,6 +269,7 @@ export default function Home() {
                 </div>
               )}
 
+              {/* FAVORITES SECTION */}
               {favoriteTools.length > 0 && (
                 <>
                   <div className="flex items-center gap-2 mb-2 mt-4">
@@ -297,18 +311,20 @@ export default function Home() {
                 </>
               )}
 
+              {/* Ad between Favorites and All Tools */}
               {favoriteTools.length > 0 && regularTools.length > 0 && (
-                   <div className="my-8">
+                <div className="my-8">
                   <AdPlaceholder variant="horizontal" />
                 </div>
               )}
 
+              {/* ALL TOOLS SECTION */}
               {favoriteTools.length > 0 && regularTools.length > 0 && (
-                   <div className="mb-4">
-                     <h2 className="text-lg font-semibold text-slate-700">
-                       All Tools
-                     </h2>
-                   </div>
+                <div className="mb-4 mt-8">
+                  <h2 className="text-lg font-semibold text-slate-700">
+                    All Tools
+                  </h2>
+                </div>
               )}
 
               {regularTools.map((tool, index) => (
@@ -342,8 +358,9 @@ export default function Home() {
                     </ToolAccordion>
                   </motion.div>
 
+                  {/* Horizontal ads between tools (when no favorites) */}
                   {favoriteTools.length === 0 && (index === 4 || index === 9) && (
-                    <div className="py-4">
+                    <div className="py-6">
                       <AdPlaceholder variant="horizontal" />
                     </div>
                   )}
@@ -351,18 +368,26 @@ export default function Home() {
               ))}
             </div>
 
+            {/* Bottom ad after all tools */}
             <div className="mt-12">
               <AdPlaceholder variant="horizontal" />
             </div>
           </main>
 
-          <aside className="hidden xl:block sticky top-4 shrink-0">
-            <AdPlaceholder variant="sidebar" />
+          {/* RIGHT SIDEBAR AD */}
+          <aside className="hidden xl:block sticky top-4 shrink-0 w-[300px]">
+            <div className="space-y-6">
+              <AdPlaceholder variant="sidebar" />
+              
+              {/* Additional ad slot for variety */}
+              <div className="pt-6">
+                <AdPlaceholder variant="square" />
+              </div>
+            </div>
           </aside>
+          
         </div>
       </div>
     </div>
   );
 }
-
-

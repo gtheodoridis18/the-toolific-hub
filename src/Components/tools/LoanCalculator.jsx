@@ -49,36 +49,36 @@ export default function LoanCalculator() {
       {/* Inputs */}
       <div className="grid gap-4 md:grid-cols-3">
         <div className="bg-slate-50 rounded-2xl p-4">
-          <p className="text-xs text-slate-500 uppercase mb-2">Loan Amount</p>
+          <p className="text-xs text-slate-500 uppercase tracking-wide mb-2">Loan Amount</p>
           <input
             type="number"
             value={loanAmount}
             onChange={(e) => setLoanAmount(e.target.value)}
-            placeholder="100000"
-            className="h-12 w-full rounded-xl border border-slate-200 px-3 text-lg"
+            placeholder="e.g. 25000"
+            className="h-14 w-full rounded-xl border border-slate-200 px-4 text-lg focus:border-teal-500 focus:outline-none transition-colors"
           />
         </div>
 
         <div className="bg-slate-50 rounded-2xl p-4">
-          <p className="text-xs text-slate-500 uppercase mb-2">Interest Rate (%)</p>
+          <p className="text-xs text-slate-500 uppercase tracking-wide mb-2">Interest Rate (%)</p>
           <input
             type="number"
             step="0.1"
             value={interestRate}
             onChange={(e) => setInterestRate(e.target.value)}
-            placeholder="5"
-            className="h-12 w-full rounded-xl border border-slate-200 px-3 text-lg"
+            placeholder="e.g. 5.5"
+            className="h-14 w-full rounded-xl border border-slate-200 px-4 text-lg focus:border-teal-500 focus:outline-none transition-colors"
           />
         </div>
 
         <div className="bg-slate-50 rounded-2xl p-4">
-          <p className="text-xs text-slate-500 uppercase mb-2">Loan Term (Months)</p>
+          <p className="text-xs text-slate-500 uppercase tracking-wide mb-2">Loan Term (Months)</p>
           <input
             type="number"
             value={loanTerm}
             onChange={(e) => setLoanTerm(e.target.value)}
-            placeholder="12"
-            className="h-12 w-full rounded-xl border border-slate-200 px-3 text-lg"
+            placeholder="e.g. 36"
+            className="h-14 w-full rounded-xl border border-slate-200 px-4 text-lg focus:border-teal-500 focus:outline-none transition-colors"
           />
         </div>
       </div>
@@ -89,7 +89,7 @@ export default function LoanCalculator() {
 
           {/* EMI */}
           <div className="bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl p-6 text-white">
-            <p className="text-teal-100 text-sm uppercase mb-2">
+            <p className="text-teal-100 text-sm uppercase tracking-wide mb-2">
               Monthly Payment (EMI)
             </p>
             <p className="text-5xl font-light">
@@ -103,19 +103,19 @@ export default function LoanCalculator() {
           {/* Totals */}
           <div className="grid gap-4 md:grid-cols-3">
             <div className="bg-white rounded-xl p-4 border border-slate-200">
-              <p className="text-xs text-slate-500 uppercase mb-1">Total Payment</p>
+              <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">Total Payment</p>
               <p className="text-2xl font-light">${totalPayment.toFixed(2)}</p>
             </div>
 
             <div className="bg-white rounded-xl p-4 border border-slate-200">
-              <p className="text-xs text-slate-500 uppercase mb-1">Total Interest</p>
+              <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">Total Interest</p>
               <p className="text-2xl font-light text-amber-600">
                 ${totalInterest.toFixed(2)}
               </p>
             </div>
 
             <div className="bg-white rounded-xl p-4 border border-slate-200">
-              <p className="text-xs text-slate-500 uppercase mb-1">Principal</p>
+              <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">Principal</p>
               <p className="text-2xl font-light">
                 ${parseFloat(loanAmount).toFixed(2)}
               </p>
@@ -132,7 +132,7 @@ export default function LoanCalculator() {
             </div>
             <div className="h-3 bg-slate-200 rounded-full overflow-hidden mb-3">
               <div
-                className="h-full bg-teal-500"
+                className="h-full bg-teal-500 transition-all duration-300"
                 style={{ width: `${(loanAmount / totalPayment) * 100}%` }}
               />
             </div>
@@ -145,7 +145,7 @@ export default function LoanCalculator() {
             </div>
             <div className="h-3 bg-slate-200 rounded-full overflow-hidden">
               <div
-                className="h-full bg-amber-500"
+                className="h-full bg-amber-500 transition-all duration-300"
                 style={{ width: `${(totalInterest / totalPayment) * 100}%` }}
               />
             </div>
@@ -155,4 +155,3 @@ export default function LoanCalculator() {
     </div>
   );
 }
-
