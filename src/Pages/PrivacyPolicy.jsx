@@ -45,12 +45,24 @@ export default function PrivacyPolicy() {
           {/* Data Collection */}
           <section>
             <h2 className="text-2xl font-semibold text-slate-900 mb-3">
-              Data Collection
+              Data Collection & User Input
             </h2>
-            <p>
-              the Toolific Hub does not collect, store, or process personal data.
-              There are no user accounts, registrations, or login systems.
-              All tools run directly in your browser.
+            <p className="mb-3">
+              <strong>the Toolific Hub does not collect, store, or log any data you enter into our tools.</strong> This includes but is not limited to:
+            </p>
+            <ul className="list-disc list-inside space-y-2 ml-4 text-slate-700">
+              <li>Credit card numbers, BIN data, or any financial information</li>
+              <li>IP addresses or network information</li>
+              <li>Domain names or SSL certificate data</li>
+              <li>Personal text, notes, or documents</li>
+              <li>Passwords or security-related data</li>
+              <li>Any other information entered into tool inputs</li>
+            </ul>
+            <p className="mt-3">
+              All tool processing happens either <strong>locally in your browser</strong> or via real-time API calls to third-party services (such as BIN lookups or IP geolocation). Toolific Hub does not intercept, store, or transmit this data to our own servers.
+            </p>
+            <p className="mt-3">
+              There are no user accounts, registrations, or login systems required to use any tools on this site.
             </p>
           </section>
 

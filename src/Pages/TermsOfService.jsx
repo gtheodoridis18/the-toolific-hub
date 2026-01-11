@@ -42,12 +42,23 @@ export default function TermsOfService() {
 
           <section>
             <h2 className="text-2xl font-semibold text-slate-900 mb-3">
-              Use of the Website
+              Use of the Website & Data Handling
             </h2>
-            <p>
+            <p className="mb-3">
               the Toolific Hub provides free, browser-based utilities for general
-              informational and personal use only. All tools operate entirely
-              on the client side.
+              informational and personal use only.
+            </p>
+            <p className="mb-3">
+              <strong>Data Privacy:</strong> Toolific Hub does not collect, log, or store any data you enter into the tools. All processing happens locally in your browser or via real-time API calls to third-party services. We do not have access to, store, or transmit:
+            </p>
+            <ul className="list-disc list-inside space-y-1 ml-4 text-slate-700">
+              <li>Financial information (credit cards, BIN data, etc.)</li>
+              <li>Network information (IP addresses, domain names, etc.)</li>
+              <li>Personal text, notes, or documents</li>
+              <li>Passwords or security-related data</li>
+            </ul>
+            <p className="mt-3">
+              <strong>Intended Use:</strong> Tools are provided for informational, educational, and utility purposes. They should not be used as the sole basis for critical decisions involving security, finance, health, or legal matters.
             </p>
           </section>
 

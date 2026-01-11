@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
+import InfoTooltip from './ui/InfoTooltip';
 
 export default function ToolAccordion({ 
   icon: Icon, 
@@ -10,13 +11,14 @@ export default function ToolAccordion({
   onToggle, 
   children,
   gradient,
-  rightElement 
+  rightElement,
+  helpText
 }) {
   return (
     <motion.div
       layout="position"
       layoutScroll
-      className={`w-full max-w-full bg-white rounded-2xl border transition-colors duration-300 ${
+      className={`w-full max-w-full bg-white rounded-2xl border transition-colors duration-300 relative z-10 ${
         isOpen
           ? 'border-teal-200 shadow-lg shadow-teal-500/5'
           : 'border-slate-200 hover:border-slate-300 hover:shadow-md'
@@ -33,7 +35,14 @@ export default function ToolAccordion({
         </div>
 
         <div className="flex-1 min-w-0">
-          <h2 className="font-semibold text-slate-900 text-lg">{title}</h2>
+          <div className="flex items-center gap-2">
+            <h2 className="font-semibold text-slate-900 text-lg">{title}</h2>
+            {helpText && (
+              <div onClick={(e) => e.stopPropagation()}>
+                <InfoTooltip content={helpText} />
+              </div>
+            )}
+          </div>
           <p className="text-sm text-slate-500 mt-0.5 break-words">
             {description}
           </p>

@@ -152,6 +152,12 @@ export default function LoanCalculator() {
           </div>
         </div>
       )}
+
+      <div className="border-t border-slate-100 pt-4 mt-6">
+        <p className="text-xs text-slate-500 text-center">
+          🔒 Privacy: All loan calculations are performed locally in your browser. the Toolific Hub does not collect or store your financial information.
+        </p>
+      </div>
     </div>
   );
 }
