@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, Cake, Clock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Select } from '../ui/Select';
+import { Select } from '../ui/Select.jsx';
 
 export default function AgeCalculator() {
   const [day, setDay] = useState('');

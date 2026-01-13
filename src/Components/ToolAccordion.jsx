@@ -18,7 +18,7 @@ export default function ToolAccordion({
     <motion.div
       layout="position"
       layoutScroll
-      className={`w-full max-w-full bg-white rounded-2xl border transition-colors duration-300 relative z-10 ${
+      className={`w-full max-w-full bg-white rounded-2xl border transition-colors duration-300 relative ${
         isOpen
           ? 'border-teal-200 shadow-lg shadow-teal-500/5'
           : 'border-slate-200 hover:border-slate-300 hover:shadow-md'
@@ -35,10 +35,10 @@ export default function ToolAccordion({
         </div>
 
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <h2 className="font-semibold text-slate-900 text-lg">{title}</h2>
+          <div className="flex items-center gap-1.5">
+            <h2 className="font-semibold text-slate-900 text-base sm:text-lg flex-shrink-0">{title}</h2>
             {helpText && (
-              <div onClick={(e) => e.stopPropagation()}>
+              <div onClick={(e) => e.stopPropagation()} className="inline-flex flex-shrink-0">
                 <InfoTooltip content={helpText} />
               </div>
             )}

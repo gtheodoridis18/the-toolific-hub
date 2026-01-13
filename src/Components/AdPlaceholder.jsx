@@ -5,14 +5,14 @@ export default function AdPlaceholder({ variant = 'horizontal', className = '' }
   const variants = {
     // Horizontal ads between tools
     horizontal: {
-      className: 'h-24 md:h-28',
+      className: 'h-20 sm:h-24 md:h-28 w-full',
       label: '728x90 Leaderboard',
       description: 'Horizontal banner ad'
     },
     
     // Top banner ad
     banner: {
-      className: 'h-28 md:h-32',
+      className: 'h-24 sm:h-28 md:h-32 w-full',
       label: '970x90 Large Leaderboard',
       description: 'Top banner ad'
     },

@@ -150,9 +150,9 @@ export default function Home() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 mb-6">
-        <div className="flex justify-center gap-2 overflow-x-auto pb-2 hide-scrollbar">
+        <div className="flex justify-start md:justify-center gap-2 overflow-x-auto pb-2 scrollbar-hide snap-x snap-mandatory">
           {CATEGORIES.map(cat => (
-            <button key={cat.id} onClick={() => setSelectedCategory(cat.id)} className={`px-4 py-2 rounded-xl font-medium transition-all whitespace-nowrap text-sm flex-shrink-0 ${selectedCategory === cat.id ? 'bg-teal-600 text-white shadow-md' : 'bg-white border border-slate-200 text-slate-700 hover:border-teal-300 hover:bg-slate-50'}`}>
+            <button key={cat.id} onClick={() => setSelectedCategory(cat.id)} className={`px-4 py-2 rounded-xl font-medium transition-all whitespace-nowrap text-sm flex-shrink-0 snap-start ${selectedCategory === cat.id ? 'bg-teal-600 text-white shadow-md' : 'bg-white border border-slate-200 text-slate-700 hover:border-teal-300 hover:bg-slate-50'}`}>
               {cat.name}
             </button>
           ))}
@@ -170,7 +170,10 @@ export default function Home() {
       )}
 
       <div className="max-w-7xl mx-auto px-4 mb-8">
-        <AdPlaceholder variant="banner" />
+        {/* Hide banner on mobile, show on tablet+ */}
+        <div className="hidden sm:block">
+          <AdPlaceholder variant="banner" />
+        </div>
       </div>
 
       <div className="max-w-[1600px] mx-auto px-4 pb-16">
@@ -235,7 +238,15 @@ export default function Home() {
                   </motion.div>
 
                   {favoriteTools.length === 0 && (index === 4 || index === 9 || index === 14 || index === 19 || index === 24 || index === 29) && (
-                    <div className="py-6"><AdPlaceholder variant="horizontal" /></div>
+                    <div className="py-6">
+                      {/* Show square ad on mobile, horizontal on desktop */}
+                      <div className="block md:hidden">
+                        <AdPlaceholder variant="square" />
+                      </div>
+                      <div className="hidden md:block">
+                        <AdPlaceholder variant="horizontal" />
+                      </div>
+                    </div>
                   )}
                 </React.Fragment>
               ))}
