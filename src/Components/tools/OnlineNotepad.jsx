@@ -39,17 +39,17 @@ export default function OnlineNotepad() {
   const charCount = text.length;
 
   return (
-    <div className="max-w-4xl mx-auto space-y-4">
+    <div className="max-w-4xl mx-auto space-y-4 overflow-hidden">
       {/* Toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-50 rounded-xl p-3">
-        <div className="flex items-center gap-2 text-sm text-slate-600">
-          <FileText className="w-4 h-4" />
-          <span>{wordCount} words</span>
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-50 rounded-xl p-3 min-w-0">
+        <div className="flex items-center gap-2 text-sm text-slate-600 min-w-0 flex-shrink-0">
+          <FileText className="w-4 h-4 flex-shrink-0" />
+          <span className="whitespace-nowrap">{wordCount} words</span>
           <span className="text-slate-300">•</span>
-          <span>{charCount} characters</span>
+          <span className="whitespace-nowrap">{charCount} characters</span>
         </div>
         
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 min-w-0">
           <button
             onClick={handleSave}
             className="h-9 px-4 rounded-lg bg-teal-600 text-white hover:bg-teal-700 transition-colors flex items-center gap-2 text-sm font-medium"

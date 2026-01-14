@@ -123,7 +123,7 @@ export default function Home() {
   const regularTools = filteredTools.filter(tool => !favorites.includes(tool.id));
 
   return (
-    <div className="min-h-screen bg-white overflow-x-hidden">
+    <div className="min-h-screen bg-white">
       <Helmet>
         <title>Free Online Tools | the Toolific Hub</title>
         <meta name="description" content="the Toolific Hub offers 34 free, fast online tools including calculators, converters, timers, design tools, SEO tools, AI tools and more. No signup required." />
@@ -150,12 +150,18 @@ export default function Home() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 mb-6">
-        <div className="flex justify-start md:justify-center gap-2 overflow-x-auto pb-2 scrollbar-hide snap-x snap-mandatory">
-          {CATEGORIES.map(cat => (
-            <button key={cat.id} onClick={() => setSelectedCategory(cat.id)} className={`px-4 py-2 rounded-xl font-medium transition-all whitespace-nowrap text-sm flex-shrink-0 snap-start ${selectedCategory === cat.id ? 'bg-teal-600 text-white shadow-md' : 'bg-white border border-slate-200 text-slate-700 hover:border-teal-300 hover:bg-slate-50'}`}>
-              {cat.name}
-            </button>
-          ))}
+        <div className="relative">
+          {/* Fade overlays */}
+          <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+          
+          <div className="flex justify-start md:justify-center gap-2 overflow-x-auto scrollbar-hide snap-x snap-mandatory">
+            {CATEGORIES.map(cat => (
+              <button key={cat.id} onClick={() => setSelectedCategory(cat.id)} className={`px-4 py-2 rounded-xl font-medium transition-all whitespace-nowrap text-sm flex-shrink-0 snap-start ${selectedCategory === cat.id ? 'bg-teal-600 text-white shadow-md' : 'bg-white border border-slate-200 text-slate-700 hover:border-teal-300 hover:bg-slate-50'}`}>
+                {cat.name}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -177,17 +183,17 @@ export default function Home() {
       </div>
 
       <div className="max-w-[1600px] mx-auto px-4 pb-16">
-        <div className="flex gap-6 items-start justify-center">
+        <div className="flex gap-6 items-start justify-center min-w-0">
           
-          <aside className="hidden xl:block sticky top-4 shrink-0 w-[300px]">
+          <aside className="hidden xl:block shrink-0 w-[300px]">
             <div className="space-y-6">
               <AdPlaceholder variant="sidebar" />
               <div className="pt-6"><AdPlaceholder variant="square" /></div>
             </div>
           </aside>
 
-          <main className="flex-1 max-w-4xl w-full">
-            <div className="space-y-4 w-full max-w-full overflow-x-hidden">
+          <main className="flex-1 max-w-4xl w-full min-w-0">
+            <div className="space-y-4 w-full">
               
               {filteredTools.length === 0 && (
                 <div className="text-center py-12">
@@ -263,7 +269,7 @@ export default function Home() {
             </div>
           </main>
 
-          <aside className="hidden xl:block sticky top-4 shrink-0 w-[300px]">
+          <aside className="hidden xl:block shrink-0 w-[300px]">
             <div className="space-y-6">
               <AdPlaceholder variant="sidebar" />
               <div className="pt-6"><AdPlaceholder variant="square" /></div>

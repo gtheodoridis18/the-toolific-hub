@@ -73,18 +73,18 @@ export default function HabitTracker() {
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div className="bg-slate-50 rounded-2xl p-4">
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           <input
             type="text"
             value={newHabit}
             onChange={(e) => setNewHabit(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && addHabit()}
             placeholder="Add a new habit..."
-            className="flex-1 h-12 px-4 rounded-xl border border-slate-200 focus:border-teal-500 focus:outline-none transition-colors"
+            className="flex-1 h-14 px-4 rounded-xl border border-slate-200 focus:border-teal-500 focus:outline-none transition-colors text-base"
           />
           <button
             onClick={addHabit}
-            className="h-12 px-6 rounded-xl bg-teal-600 text-white hover:bg-teal-700 transition-colors flex items-center gap-2 font-medium"
+            className="h-14 px-6 rounded-xl bg-teal-600 text-white hover:bg-teal-700 transition-colors flex items-center justify-center gap-2 font-medium flex-shrink-0"
           >
             <Plus className="w-5 h-5" />
             Add

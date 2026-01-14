@@ -18,7 +18,7 @@ export default function ToolAccordion({
     <motion.div
       layout="position"
       layoutScroll
-      className={`w-full max-w-full bg-white rounded-2xl border transition-colors duration-300 relative ${
+      className={`w-full bg-white rounded-2xl border transition-colors duration-300 relative ${
         isOpen
           ? 'border-teal-200 shadow-lg shadow-teal-500/5'
           : 'border-slate-200 hover:border-slate-300 hover:shadow-md'
@@ -70,9 +70,9 @@ export default function ToolAccordion({
             animate={{ height: 'auto' }}
             exit={{ height: 0 }}
             transition={{ duration: 0.3, ease: [0.4, 0.0, 0.2, 1] }}
-            className="w-full max-w-full overflow-hidden"
+            className="w-full overflow-hidden"
           >
-            <div className="px-4 pb-6 md:px-6 md:pb-8 pt-6 w-full max-w-full">
+            <div className="px-4 pb-6 md:px-6 md:pb-8 pt-6 w-full">
               {children}
             </div>
           </motion.div>

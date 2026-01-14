@@ -5,7 +5,7 @@ export default function AdPlaceholder({ variant = 'horizontal', className = '' }
   const variants = {
     // Horizontal ads between tools
     horizontal: {
-      className: 'h-20 sm:h-24 md:h-28 w-full',
+      className: 'h-24 sm:h-28 md:h-32 w-full max-w-full',
       label: '728x90 Leaderboard',
       description: 'Horizontal banner ad'
     },
@@ -43,7 +43,7 @@ export default function AdPlaceholder({ variant = 'horizontal', className = '' }
 
   return (
     <div
-      className={`${config.className} ${className} bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl border-2 border-dashed border-slate-200 flex flex-col items-center justify-center relative overflow-hidden transition-all duration-300 hover:border-slate-300`}
+      className={`${config.className} ${className} bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl border-2 border-dashed border-slate-200 flex flex-col items-center justify-center relative overflow-hidden transition-all duration-300 hover:border-slate-300 min-w-0`}
       aria-label="Advertisement"
       data-ad-variant={variant}
     >

@@ -64,56 +64,62 @@ export default function WorkHoursCalculator() {
             animate={{ opacity: 1, y: 0 }}
             className="bg-slate-50 rounded-2xl p-4"
           >
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-              <div className="col-span-2 md:col-span-1">
-                <label className="text-xs text-slate-600 mb-1 block">Date</label>
-                <input
-                  type="date"
-                  value={entry.date}
-                  onChange={(e) => updateEntry(entry.id, 'date', e.target.value)}
-                  className="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 focus:border-teal-500 focus:outline-none transition-colors"
-                />
+            <div className="space-y-3">
+              <div className="grid grid-cols-1 gap-3">
+                <div>
+                  <label className="text-xs text-slate-600 mb-1 block">Date</label>
+                  <input
+                    type="date"
+                    value={entry.date}
+                    onChange={(e) => updateEntry(entry.id, 'date', e.target.value)}
+                    className="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 focus:border-teal-500 focus:outline-none transition-colors"
+                  />
+                </div>
               </div>
               
-              <div>
-                <label className="text-xs text-slate-600 mb-1 block">Time In</label>
-                <input
-                  type="time"
-                  value={entry.timeIn}
-                  onChange={(e) => updateEntry(entry.id, 'timeIn', e.target.value)}
-                  className="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 focus:border-teal-500 focus:outline-none transition-colors"
-                />
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-xs text-slate-600 mb-1 block">Time In</label>
+                  <input
+                    type="time"
+                    value={entry.timeIn}
+                    onChange={(e) => updateEntry(entry.id, 'timeIn', e.target.value)}
+                    className="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 focus:border-teal-500 focus:outline-none transition-colors"
+                  />
+                </div>
+                
+                <div>
+                  <label className="text-xs text-slate-600 mb-1 block">Time Out</label>
+                  <input
+                    type="time"
+                    value={entry.timeOut}
+                    onChange={(e) => updateEntry(entry.id, 'timeOut', e.target.value)}
+                    className="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 focus:border-teal-500 focus:outline-none transition-colors"
+                  />
+                </div>
               </div>
               
-              <div>
-                <label className="text-xs text-slate-600 mb-1 block">Time Out</label>
-                <input
-                  type="time"
-                  value={entry.timeOut}
-                  onChange={(e) => updateEntry(entry.id, 'timeOut', e.target.value)}
-                  className="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 focus:border-teal-500 focus:outline-none transition-colors"
-                />
-              </div>
-              
-              <div>
-                <label className="text-xs text-slate-600 mb-1 block">Break (min)</label>
-                <input
-                  type="number"
-                  min="0"
-                  value={entry.breakMinutes}
-                  onChange={(e) => updateEntry(entry.id, 'breakMinutes', e.target.value)}
-                  className="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 focus:border-teal-500 focus:outline-none transition-colors"
-                />
-              </div>
-              
-              <div className="flex items-end">
-                <button
-                  onClick={() => removeEntry(entry.id)}
-                  disabled={entries.length === 1}
-                  className="w-full h-11 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
-                >
-                  <Minus className="w-4 h-4" />
-                </button>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-xs text-slate-600 mb-1 block">Break (min)</label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={entry.breakMinutes}
+                    onChange={(e) => updateEntry(entry.id, 'breakMinutes', e.target.value)}
+                    className="w-full h-11 px-3 text-sm rounded-xl border border-slate-200 focus:border-teal-500 focus:outline-none transition-colors"
+                  />
+                </div>
+                
+                <div className="flex items-end">
+                  <button
+                    onClick={() => removeEntry(entry.id)}
+                    disabled={entries.length === 1}
+                    className="w-full h-11 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
+                  >
+                    <Minus className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
             </div>
             
