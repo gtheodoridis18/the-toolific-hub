@@ -3,18 +3,18 @@ import React from 'react';
 export default function AdPlaceholder({ variant = 'horizontal', className = '' }) {
   // Ad unit configurations matching standard Google AdSense sizes
   const variants = {
-    // Horizontal ads between tools
+    // Horizontal ads between tools - SQUARE on mobile for consistency
     horizontal: {
-      className: 'h-24 sm:h-28 md:h-32 w-full max-w-full',
-      label: '728x90 Leaderboard',
-      description: 'Horizontal banner ad'
+      className: 'h-[250px] w-full', // Always square height like other mobile ads
+      label: '300x250 / 728x90',
+      description: 'Responsive ad unit'
     },
     
-    // Top banner ad
+    // Top banner ad - SQUARE on mobile for consistency
     banner: {
-      className: 'h-24 sm:h-28 md:h-32 w-full',
-      label: '970x90 Large Leaderboard',
-      description: 'Top banner ad'
+      className: 'h-[250px] w-full', // Always square height like other mobile ads
+      label: '300x250 / 970x90',
+      description: 'Responsive banner ad'
     },
     
     // Sidebar ads (left and right)
