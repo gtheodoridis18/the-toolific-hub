@@ -12,12 +12,14 @@ export default function ToolAccordion({
   children,
   gradient,
   rightElement,
-  helpText
+  helpText,
+  toolId
 }) {
   return (
     <motion.div
       layout="position"
       layoutScroll
+      data-tool-id={toolId}
       className={`w-full bg-white rounded-2xl border transition-colors duration-300 relative ${
         isOpen
           ? 'border-teal-200 shadow-lg shadow-teal-500/5'

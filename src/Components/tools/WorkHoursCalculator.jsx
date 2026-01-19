@@ -54,7 +54,7 @@ export default function WorkHoursCalculator() {
   const overtimeHours = Math.max(0, totalHours - 40);
 
   return (
-    <div className="w-full max-w-3xl mx-auto space-y-6">
+    <div className="w-full mx-auto space-y-6">
       {/* Entries */}
       <div className="space-y-3">
         {entries.map((entry, index) => (
@@ -62,52 +62,52 @@ export default function WorkHoursCalculator() {
             key={entry.id}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-slate-50 rounded-2xl p-4"
+            className="bg-slate-50 rounded-2xl p-4 overflow-hidden"
           >
-            <div className="space-y-4">
-              <div>
+            <div className="space-y-4 w-full">
+              <div className="w-full">
                 <label className="text-xs text-slate-600 mb-1.5 block font-medium">Date</label>
                 <input
                   type="date"
                   value={entry.date}
                   onChange={(e) => updateEntry(entry.id, 'date', e.target.value)}
-                  className="w-full h-12 px-3 text-sm rounded-xl border-2 border-slate-200 focus:border-teal-500 focus:outline-none transition-colors bg-white"
+                  className="w-full max-w-full h-12 px-3 text-sm rounded-xl border-2 border-slate-200 focus:border-teal-500 focus:outline-none transition-colors bg-white"
                 />
               </div>
               
-              <div>
+              <div className="w-full">
                 <label className="text-xs text-slate-600 mb-1.5 block font-medium">Time In</label>
                 <input
                   type="time"
                   value={entry.timeIn}
                   onChange={(e) => updateEntry(entry.id, 'timeIn', e.target.value)}
-                  className="w-full h-12 px-3 text-sm rounded-xl border-2 border-slate-200 focus:border-teal-500 focus:outline-none transition-colors bg-white"
+                  className="w-full max-w-full h-12 px-3 text-sm rounded-xl border-2 border-slate-200 focus:border-teal-500 focus:outline-none transition-colors bg-white"
                 />
               </div>
               
-              <div>
+              <div className="w-full">
                 <label className="text-xs text-slate-600 mb-1.5 block font-medium">Time Out</label>
                 <input
                   type="time"
                   value={entry.timeOut}
                   onChange={(e) => updateEntry(entry.id, 'timeOut', e.target.value)}
-                  className="w-full h-12 px-3 text-sm rounded-xl border-2 border-slate-200 focus:border-teal-500 focus:outline-none transition-colors bg-white"
+                  className="w-full max-w-full h-12 px-3 text-sm rounded-xl border-2 border-slate-200 focus:border-teal-500 focus:outline-none transition-colors bg-white"
                 />
               </div>
               
               <div className="grid grid-cols-2 gap-4">
-                <div>
+                <div className="min-w-0">
                   <label className="text-xs text-slate-600 mb-1.5 block font-medium">Break (min)</label>
                   <input
                     type="number"
                     min="0"
                     value={entry.breakMinutes}
                     onChange={(e) => updateEntry(entry.id, 'breakMinutes', e.target.value)}
-                    className="w-full h-12 px-3 text-sm rounded-xl border-2 border-slate-200 focus:border-teal-500 focus:outline-none transition-colors bg-white"
+                    className="w-full max-w-full h-12 px-3 text-sm rounded-xl border-2 border-slate-200 focus:border-teal-500 focus:outline-none transition-colors bg-white"
                   />
                 </div>
                 
-                <div className="flex items-end">
+                <div className="flex items-end min-w-0">
                   <button
                     onClick={() => removeEntry(entry.id)}
                     disabled={entries.length === 1}

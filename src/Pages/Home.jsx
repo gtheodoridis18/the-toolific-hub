@@ -126,7 +126,28 @@ export default function Home() {
     });
   };
 
-  const handleToggle = (id) => setOpenTool(openTool === id ? null : id);
+  const handleToggle = (id) => {
+    setOpenTool(openTool === id ? null : id);
+    
+    // Auto-scroll to center the tool when opened
+    if (openTool !== id) { // Only scroll when opening, not closing
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          const toolElement = document.querySelector(`[data-tool-id="${id}"]`);
+          if (toolElement) {
+            const headerOffset = 80; // Account for any sticky headers
+            const elementPosition = toolElement.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+            
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: 'smooth'
+            });
+          }
+        }, 100); // Small delay to allow accordion to expand first
+      });
+    }
+  };
 
   const toggleFavorite = (toolId) => {
     const newFavorites = favorites.includes(toolId) ? favorites.filter(id => id !== toolId) : [...favorites, toolId];
@@ -234,7 +255,16 @@ export default function Home() {
 
                   {favoriteTools.map((tool, index) => (
                     <motion.div key={tool.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: index * 0.05 }}>
-                      <ToolAccordion icon={tool.icon} title={tool.title} description={tool.description} gradient={tool.gradient} isOpen={openTool === tool.id} onToggle={() => handleToggle(tool.id)} helpText={tool.helpText} rightElement={
+                      <ToolAccordion 
+                        toolId={tool.id}
+                        icon={tool.icon} 
+                        title={tool.title} 
+                        description={tool.description} 
+                        gradient={tool.gradient} 
+                        isOpen={openTool === tool.id} 
+                        onToggle={() => handleToggle(tool.id)} 
+                        helpText={tool.helpText} 
+                        rightElement={
                         <button onClick={(e) => { e.stopPropagation(); toggleFavorite(tool.id); }} aria-label={`Remove ${tool.title} from favorites`} className="p-2 rounded-lg hover:bg-slate-100 transition-colors">
                           <Star className="w-5 h-5 text-amber-500 fill-amber-500" />
                         </button>
@@ -257,7 +287,16 @@ export default function Home() {
               {regularTools.map((tool, index) => (
                 <React.Fragment key={tool.id}>
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: (favoriteTools.length + index) * 0.05 }}>
-                    <ToolAccordion icon={tool.icon} title={tool.title} description={tool.description} gradient={tool.gradient} isOpen={openTool === tool.id} onToggle={() => handleToggle(tool.id)} helpText={tool.helpText} rightElement={
+                    <ToolAccordion 
+                      toolId={tool.id}
+                      icon={tool.icon} 
+                      title={tool.title} 
+                      description={tool.description} 
+                      gradient={tool.gradient} 
+                      isOpen={openTool === tool.id} 
+                      onToggle={() => handleToggle(tool.id)} 
+                      helpText={tool.helpText} 
+                      rightElement={
                       <button onClick={(e) => { e.stopPropagation(); toggleFavorite(tool.id); }} aria-label={`Add ${tool.title} to favorites`} className="p-2 rounded-lg hover:bg-slate-100 transition-colors">
                         <Star className="w-5 h-5 text-slate-300 hover:text-amber-400" />
                       </button>
