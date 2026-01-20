@@ -33,18 +33,19 @@ export default function InfoTooltip({ content }) {
       const isMobile = window.innerWidth < 640;
       
       if (isMobile) {
-        // Mobile: Find the parent tool card and position tooltip below it
-        let toolCard = buttonRef.current;
+        // Mobile: Find the parent tool card's header button and position tooltip below it
+        let toolButton = buttonRef.current;
         
-        while (toolCard && !toolCard.classList.contains('rounded-2xl')) {
-          toolCard = toolCard.parentElement;
+        // Traverse up to find the header button (has aria-label containing 'Expand' or 'Collapse')
+        while (toolButton && !toolButton.getAttribute('aria-label')?.includes('tool')) {
+          toolButton = toolButton.parentElement;
         }
         
-        if (toolCard) {
-          const cardRect = toolCard.getBoundingClientRect();
+        if (toolButton) {
+          const buttonRect = toolButton.getBoundingClientRect();
           setPosition({
-            top: cardRect.bottom + 8,
-            left: Math.max(16, Math.min(cardRect.left, window.innerWidth - (window.innerWidth - 32) - 16))
+            top: buttonRect.bottom + 8,
+            left: Math.max(16, Math.min(buttonRect.left, window.innerWidth - (window.innerWidth - 32) - 16))
           });
         } else {
           setPosition({
